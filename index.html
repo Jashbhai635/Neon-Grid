@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEON GRID: ULTIMATE STRIKE</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --neon-blue: #00f3ff;
+            --neon-red: #ff0055;
+            --neon-purple: #bc13fe;
+            --neon-green: #0aff0a;
+            --neon-yellow: #f8ff13;
+            --bg-dark: #050508;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: white;
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #101015 0%, #050508 100%);
+        }
+
+        #menu {
+            text-align: center;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 30px;
+            border: 2px solid var(--neon-blue);
+            box-shadow: 0 0 20px var(--neon-blue), inset 0 0 15px rgba(0, 243, 255, 0.3);
+            border-radius: 30px;
+            width: 380px;
+            position: relative;
+            z-index: 20;
+            max-height: 95vh;
+            overflow-y: auto;
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--neon-blue);
+            letter-spacing: 3px;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            color: white;
+            border: 1px solid rgba(0, 243, 255, 0.4);
+            padding: 12px;
+            margin: 8px 0;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-radius: 8px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .btn:hover:not(:disabled) {
+            box-shadow: 0 0 15px var(--neon-blue);
+            background: rgba(0, 243, 255, 0.1);
+        }
+
+        .btn.active {
+            background: var(--neon-blue) !important;
+            color: black !important;
+            box-shadow: 0 0 20px var(--neon-blue);
+            font-weight: bold;
+        }
+
+        .info-btn {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            border-radius: 50%;
+            border: 1px solid var(--neon-yellow);
+            color: var(--neon-yellow);
+            font-size: 0.8rem;
+            cursor: pointer;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+
+        #ability-bar {
+            display: flex;
+            gap: 5px;
+            margin-top: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .ability-btn {
+            width: 45px; height: 45px;
+            border: 1px solid var(--neon-purple);
+            background: black;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .ability-btn:disabled { opacity: 0.3; cursor: not-allowed; border-color: #444; }
+        .ability-btn.selected { background: var(--neon-purple); box-shadow: 0 0 15px var(--neon-purple); }
+
+        #game-container { position: relative; display: flex; flex-direction: column; align-items: center; }
+
+        #board-wrapper {
+            position: relative;
+            padding: 0;
+            border: 2px solid var(--neon-blue); 
+            box-shadow: 0 0 25px var(--neon-blue);
+            border-radius: 10px;
+            background: #000;
+        }
+
+        #board { display: grid; gap: 4px; background-color: var(--neon-blue); }
+
+        .cell {
+            background-color: #000; 
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; position: relative;
+            transition: 0.2s;
+        }
+
+        .cell.o { color: var(--neon-blue); text-shadow: 0 0 10px var(--neon-blue); }
+        .cell.x { color: var(--neon-red); text-shadow: 0 0 10px var(--neon-red); }
+        .cell.frozen { opacity: 0.5; filter: contrast(1.5) brightness(1.5) drop-shadow(0 0 5px #00f3ff); }
+
+        #ultimate-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; background: #000; padding: 10px; }
+        .mini-board { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; background: #333; border: 1px solid #333; position: relative; }
+        .mini-cell { width: 40px; height: 40px; background: #050508; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; cursor: pointer; }
+        .mini-cell.o { color: var(--neon-blue) !important; text-shadow: 0 0 8px var(--neon-blue); }
+        .mini-cell.x { color: var(--neon-red) !important; text-shadow: 0 0 8px var(--neon-red); }
+        
+        .mini-board.won-o::after { content: 'O'; position: absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.8); font-size:3rem; color:var(--neon-blue); z-index:5; }
+        .mini-board.won-x::after { content: 'X'; position: absolute; top:0; left:0; width:100%; height:100%; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,0.8); font-size:3rem; color:var(--neon-red); z-index:5; }
+
+        .mini-board.active-zone { border: 2px solid var(--neon-green); box-shadow: 0 0 15px var(--neon-green); }
+
+        #strike-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; }
+        #strike-line { stroke: white; stroke-width: 6; stroke-linecap: round; filter: drop-shadow(0 0 12px var(--neon-blue)); stroke-dasharray: 2000; stroke-dashoffset: 2000; transition: stroke-dashoffset 0.8s ease-out; }
+
+        #modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); display: flex; justify-content: center; align-items: center; z-index: 100; visibility: hidden; opacity: 0; transition: 0.3s; }
+        #modal { background: #000; padding: 30px; border: 3px solid var(--neon-blue); text-align: center; box-shadow: 0 0 40px var(--neon-blue); border-radius: 20px; width: 320px; max-height: 80vh; overflow-y: auto; position: relative; }
+        
+        #modal-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            color: var(--neon-red);
+            font-size: 1.5rem;
+            cursor: pointer;
+            font-weight: bold;
+            text-shadow: 0 0 5px var(--neon-red);
+            transition: 0.3s;
+        }
+        #modal-close-btn:hover {
+            transform: scale(1.2);
+            text-shadow: 0 0 15px var(--neon-red);
+        }
+
+        #matchmaking-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 90; display: flex; flex-direction: column; justify-content: center; align-items: center; visibility: hidden; opacity: 0; }
+        .loader { width: 80px; height: 80px; border: 5px solid rgba(0, 243, 255, 0.2); border-top: 5px solid var(--neon-blue); border-radius: 50%; animation: spin 1s linear infinite; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .hidden { display: none !important; }
+        .visible { visibility: visible !important; opacity: 1 !important; }
+    </style>
+</head>
+<body>
+    <div id="menu">
+        <h1>NEON GRID</h1>
+        <div style="margin-bottom: 20px;">
+            <button id="pvc-btn" class="btn active" onclick="selectMode('pvc')">VS CPU</button>
+            <button id="pvp-btn" class="btn" onclick="selectMode('pvp')">VS PLAYER (Local)</button>
+            <button id="online-btn" class="btn" onclick="selectMode('online')" style="border-color: var(--neon-purple); color: var(--neon-purple);">VS PLAYER (ONLINE)</button>
+            
+            <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                <button id="ultimate-btn" class="btn" onclick="selectMode('ultimate')" style="border-color: var(--neon-yellow); color: var(--neon-yellow); font-weight:bold; flex: 1; margin:0;">ULTIMATE GRID MODE</button>
+                <div class="info-btn" onclick="showUltimateRules()">i</div>
+            </div>
+
+            <div style="display: flex; align-items: center;">
+                <button id="special-btn" class="btn" onclick="selectMode('special')" style="border-color: var(--neon-green); color: var(--neon-green); font-weight:bold; flex: 1; margin:0;">FEATURED MODE (9x9)</button>
+                <div class="info-btn" onclick="showAbilityRules()">i</div>
+            </div>
+        </div>
+        
+        <div id="size-selector">
+            <button class="btn" onclick="toggleSizeDropdown()" id="size-text">12 x 12 (Win: 6) ▼</button>
+            <div id="size-options" class="hidden" style="background: #000; border: 1px solid var(--neon-blue); border-radius: 8px;">
+                <div class="btn" onclick="setBoardSize(3, '3 x 3 (Win: 3)')">3 x 3</div>
+                <div class="btn" onclick="setBoardSize(6, '6 x 6 (Win: 5)')">6 x 6</div>
+                <div class="btn" onclick="setBoardSize(9, '9 x 9 (Win: 5)')">9 x 9</div>
+                <div class="btn" onclick="setBoardSize(12, '12 x 12 (Win: 6)')">12 x 12</div>
+            </div>
+        </div>
+
+        <button class="btn" style="border-color: var(--neon-red); color: var(--neon-red); margin-top: 15px;" onclick="initiateGame()">START MISSION</button>
+    </div>
+
+    <div id="matchmaking-overlay">
+        <div class="loader"></div>
+        <h2 style="color: var(--neon-blue); margin-top: 20px;">CONNECTING TO THE PLAYERS...</h2>
+    </div>
+
+    <div id="game-container" class="hidden">
+        <div id="status" style="margin-bottom: 15px; font-size: 1rem; color: var(--neon-blue); letter-spacing: 2px;">SYSTEM: READY</div>
+        <div id="board-wrapper">
+            <div id="board"></div>
+            <div id="ultimate-container" class="hidden"></div>
+            <svg id="strike-svg"><line id="strike-line" x1="0" y1="0" x2="0" y2="0" /></svg>
+        </div>
+
+        <div id="ability-bar" class="hidden">
+            <button id="ab-bomb" class="ability-btn" onclick="selectAbility('bomb')">💣</button>
+            <button id="ab-block" class="ability-btn" onclick="selectAbility('block')">🧱</button>
+            <button id="ab-swap" class="ability-btn" onclick="selectAbility('swap')">🔁</button>
+            <button id="ab-double" class="ability-btn" onclick="selectAbility('double')">⚡</button>
+            <button id="ab-freeze" class="ability-btn" onclick="selectAbility('freeze')">❄️</button>
+        </div>
+
+        <div style="display: flex; gap: 10px; margin-top: 20px; width: 100%; justify-content: center;">
+            <button class="btn" style="flex: 1" onclick="showHintModal()">HINT</button>
+            <button class="btn" style="flex: 1" onclick="confirmQuit()">QUIT</button>
+        </div>
+    </div>
+
+    <div id="modal-overlay">
+        <div id="modal">
+            <div id="modal-close-btn" onclick="closeModal()">×</div>
+            <h2 id="modal-title">TITLE</h2>
+            <div id="modal-msg" style="margin: 20px 0; color: #ddd; font-size: 0.9rem;"></div>
+            <div id="modal-actions"></div>
+        </div>
+    </div>
+
+    <script src="logic.js"></script>
+</body>
+</html>
