@@ -124,7 +124,7 @@ Click here to play ! [https://jashbhai634.itch.io/neon-grid]
 [![Play Neon-Grid](https://img.shields.io/badge/Play%20Neon--Grid-itch.io-blue)](https://jashbhai634.itch.io/neon-grid)
 
 ---
-Tech Stack
+Tech Stack :
 
 ![HTML5](https://img.shields.io/badge/Engine-HTML5-orange)
 
