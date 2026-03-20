@@ -7,9 +7,7 @@
 ---
 [![Play Neon-Grid](https://img.shields.io/badge/Play%20Neon--Grid-itch.io-blue)](https://jashbhai634.itch.io/neon-grid)
 
-This isn’t Tic-Tac-Toe.
-
-This is territory control, mind games, and neon dominance.
+This isn’t Tic-Tac-Toe. This is territory control, mind games, and neon dominance.
 
 Welcome to NEON GRID: a cyber-futuristic strategy game where every move is a command, every grid is a battlefield, and victory belongs to the one who controls the board, not luck.
 
@@ -90,19 +88,14 @@ Win a mini-board → own it
 
 3 owned boards in a row = Victory
 
-No randomness.
-
-Only foresight.
+No randomness.Only foresight.
 
 🤖 INTELLIGENT AI
 
 “The AI doesn’t panic. It punishes.”
 Uses abilities strategically
-
 Breaks streaks before they complete
-
 Freezes at critical moments
-
 Adapts to board size and mode
 
 You win because you’re better — not because it’s easy.
