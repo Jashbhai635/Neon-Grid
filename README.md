@@ -114,6 +114,8 @@ Best played with sound ON.
 
 Click here to play ! [https://jashbhai634.itch.io/neon-grid]
 
+This game is best experienced on itch.io
+
 [![Play Neon-Grid](https://img.shields.io/badge/Play%20Neon--Grid-itch.io-blue)](https://jashbhai634.itch.io/neon-grid)
 
 ---
